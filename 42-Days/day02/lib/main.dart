@@ -49,7 +49,7 @@ class HomeScreen extends StatelessWidget {
             ElevatedButton(
               onPressed: () {
                 // Navigate to ex01 using named route
-                Navigator.pushNamed(context, 'ex01');
+                Navigator.pushNamed(context, '/ex01');
               },
               child: const Text('Go to Ex01'),
             ),

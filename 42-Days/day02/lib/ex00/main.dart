@@ -1,5 +1,22 @@
 import 'package:flutter/material.dart';
 
+
+// class Today extends StatefulWidget {
+//   const Today({super.key});
+//
+//   @override
+//   State<Today> createState() => _TodayState();
+// }
+//
+// class _TodayState extends State<Today> {
+//   @override
+//   Widget build(BuildContext context) {
+//     return const Placeholder();
+//   }
+// }
+
+
+
 class Ex00 extends StatefulWidget {
   const Ex00({super.key});
 
@@ -74,7 +91,10 @@ class _Ex00State extends State<Ex00> {
       ),
 
 
-      body: Center(child:  widg[myindex]),
+      body: Center(
+
+          child:  widg[myindex]
+      ),
       bottomNavigationBar: BottomNavigationBar(
 
         onTap: (index){
