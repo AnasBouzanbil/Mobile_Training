@@ -17,63 +17,55 @@ class MyApp extends StatelessWidget {
     List<String> buttonLabels = ['Ex00', 'Ex01', 'Ex02', 'Ex03', 'Surprise'];
 
     return MaterialApp(
-      home: Scaffold(
-        appBar: buildAppBar(),
-        body: ListView.builder(
-          itemCount: buttonLabels.length,
-          itemBuilder: (context, index){
-            return Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8.0),
-              child: ElevatedButton(
-                onPressed: () {
-                  if (index == 0)
-                    {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => ex00()),
-                          );
-                    }
-                  else if (index == 1)
-                    {
-                      Navigator.push(
-                          context,
-                    MaterialPageRoute(builder: (context) => ex01()),
-                  );
-                    }
-                  else if (index ==2){
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => ex02()),
-                    );
-                  }
-                  else if (index ==3){
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => ex03()),
-                    );
-                  }
-                },
-                child: Text(buttonLabels[index]),
-              ),
+      routes: {
+        '/': (context) => MyHomePage(), // Update to a new widget to handle the home page
+        '/ex00': (context) => ex00(),
+        '/ex01': (context) => ex01(),
+        '/ex02': (context) => ex02(),
+        '/ex03': (context) => ex03(),
+      },
+    );
+  }
+}
 
-            );
+class MyHomePage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    List<String> buttonLabels = ['Ex00', 'Ex01', 'Ex02', 'Ex03', 'Surprise'];
 
-          }
-        )
-
+    return Scaffold(
+      appBar: buildAppBar(),
+      body: ListView.builder(
+        itemCount: buttonLabels.length,
+        itemBuilder: (context, index) {
+          return Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            child: ElevatedButton(
+              onPressed: () {
+                if (index == 0) {
+                  Navigator.pushNamed(context, '/ex00');
+                } else if (index == 1) {
+                  Navigator.pushNamed(context, '/ex01');
+                } else if (index == 2) {
+                  Navigator.pushNamed(context, '/ex02');
+                } else if (index == 3) {
+                  Navigator.pushNamed(context, '/ex03');
+                }
+              },
+              child: Text(buttonLabels[index]),
+            ),
+          );
+        },
       ),
-
     );
   }
 
   AppBar buildAppBar() {
     return AppBar(
-        backgroundColor: Colors.cyan,
-
-        centerTitle: true,
-        title : HoverTitle(),
-
-      );
+      backgroundColor: Colors.cyan,
+      centerTitle: true,
+      title: HoverTitle(),
+    );
   }
 }
 
@@ -89,10 +81,10 @@ class _HoverTitleState extends State<HoverTitle> {
   Widget build(BuildContext context) {
     return MouseRegion(
       onEnter: (_) => setState(() {
-        _textColor = Colors.yellow;  // Change to any color you want on hover
+        _textColor = Colors.yellow;
       }),
       onExit: (_) => setState(() {
-        _textColor = Colors.lightGreenAccent;  // Original color when not hovering
+        _textColor = Colors.lightGreenAccent;
       }),
       child: Text(
         'Choose Day',
