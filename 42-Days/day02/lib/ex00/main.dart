@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 
+
 // class Today extends StatefulWidget {
 //   const Today({super.key});
 //
@@ -40,7 +41,11 @@ class _Ex00State extends State<Ex00> {
   @override
   Widget build(BuildContext context) {
     List<Widget> widg = [
-      Text("Today\n  " + searched, style: TextStyle(fontSize: 45, fontWeight: FontWeight.w900)),
+      Container(
+        child: Center(
+
+        ),
+      ),
       Text("Tomorrow\n  " + searched, style: TextStyle(fontSize: 40, fontWeight: FontWeight.w900)),
       Text("next month\n  " + searched, style: TextStyle(fontSize: 35, fontWeight: FontWeight.w900))
     ];

@@ -1,36 +1,17 @@
 import 'package:flutter/material.dart';
-
+import 'package:lottie/lottie.dart';
 import 'package:permission_handler/permission_handler.dart';
-
-// class Today extends StatefulWidget {
-//   const Today({super.key});
-//
-//   @override
-//   State<Today> createState() => _TodayState();
-// }
-//
-// class _TodayState extends State<Today> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return const Placeholder();
-//   }
-// }
-
-
 
 class Ex01 extends StatefulWidget {
   const Ex01({super.key});
 
   @override
-  State<Ex01> createState() => _Ex00State();
+  State<Ex01> createState() => _Ex01State();
 }
 
-
-
-class _Ex00State extends State<Ex01> {
-
+class _Ex01State extends State<Ex01> {
   int myindex = 0;
-  final  _searchController = TextEditingController();
+  final _searchController = TextEditingController();
   String searched = "";
 
   @override
@@ -38,123 +19,137 @@ class _Ex00State extends State<Ex01> {
     _searchController.dispose(); // Clean up the controller when the widget is removed
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     List<Widget> widg = [
-      Text("Today\n  " + searched, style: TextStyle(fontSize: 45, fontWeight: FontWeight.w900)),
-      Text("Tomorrow\n  " + searched, style: TextStyle(fontSize: 40, fontWeight: FontWeight.w900)),
-      Text("next month\n  " + searched, style: TextStyle(fontSize: 35, fontWeight: FontWeight.w900))
+      _buildText('Today\n  ' + searched, 45),
+      _buildText('Tomorrow\n  ' + searched, 40),
+      _buildText('Next month\n  ' + searched, 35)
     ];
+
     return Scaffold(
       appBar: AppBar(
-        leading: Container(),
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.center, // Centers the icons
-          children: [
-            Expanded(
-              child: Container(
-                height: 40, // Adjust the height of the search bar
-                padding: EdgeInsets.symmetric(horizontal: 10),
-                decoration: BoxDecoration(
-                  color: Colors.white, // Search bar background color
-                  borderRadius: BorderRadius.circular(10), // Rounded corners
+        title: _buildSearchBar(),
+        backgroundColor: Colors.teal[400], // Set AppBar color
+        elevation: 0, // Remove shadow
+      ),
+      body: Center(
+        child: AnimatedSwitcher(
+          duration: Duration(milliseconds: 500), // Fade animation for switching texts
+          child: widg[myindex],
+        ),
+      ),
+      bottomNavigationBar: _buildBottomNavigationBar(),
+    );
+  }
+
+  // Custom search bar
+  Widget _buildSearchBar() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center, // Centers the icons
+      children: [
+        Expanded(
+          child: Container(
+            height: 45,
+            padding: EdgeInsets.symmetric(horizontal: 10),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(30),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.1),
+                  blurRadius: 10,
+                  offset: Offset(0, 4),
                 ),
-                child: TextField(
-                  controller: _searchController, // Assign the controller here
-
-                  decoration: InputDecoration(
-                    hintText: 'Search...',
-                    border: InputBorder.none, // Remove the border
-                    // Use suffixIcon for an interactive icon
-                    suffixIcon: IconButton(
-                      onPressed: () {
-
-                        setState(() {
-                          // Handle the search action here
-                          searched = _searchController.text;
-                          print('Searched text: $searched'); // Debug print
-                        });
-                      },
-                      icon: Icon(Icons.search), // Search icon
-                    ),
-                  ),
+              ],
+            ),
+            child: TextField(
+              controller: _searchController,
+              decoration: InputDecoration(
+                hintText: 'Search...',
+                border: InputBorder.none,
+                suffixIcon: IconButton(
+                  onPressed: () {
+                    setState(() {
+                      searched = _searchController.text;
+                    });
+                  },
+                  icon: Icon(Icons.search, color: Colors.teal[300]),
                 ),
               ),
             ),
-            VerticalDivider(
-              color: Colors.black, // Divider color (adjust to your theme)
-              thickness: 5,        // Divider thickness
-              width: 20,           // Space between the search bar and the icon
-            ),
-            IconButton(
-              onPressed: () {
-                // Handle the action when the map icon is presse
-                getLocation();
-                print('Map icon pressed');
-              },
-              icon: Icon(Icons.location_city),
-            ),
-          ],
+          ),
         ),
+        VerticalDivider(color: Colors.black, thickness: 2),
+        IconButton(
+          onPressed: () {
+            getLocation();
+          },
+          icon: Icon(Icons.location_on, color: Colors.white),
+        ),
+      ],
+    );
+  }
+
+  // Widget for displaying text
+  Widget _buildText(String text, double size) {
+    return Padding(
+      padding: const EdgeInsets.all(20.0),
+      child: Text(
+        text,
+        key: ValueKey(text),
+        style: TextStyle(
+          fontSize: size,
+          fontWeight: FontWeight.w900,
+          color: Colors.teal[800],
+        ),
+        textAlign: TextAlign.center,
       ),
+    );
+  }
 
-
-      body: Center(
-
-          child:  widg[myindex]
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-
-        onTap: (index){
-          setState(() {
-            myindex = index;
-          });
-
-        },
-        currentIndex: myindex,
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.calendar_today),
-            label: 'Currently: ' , // Display the searched text
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.calendar_today_outlined),
-            label: 'Tomorrow: ' , // Display the searched text
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.calendar_month),
-            label: 'Settings: ' , // Display the searched text
-          ),
-        ],
-      ),
+  // Custom bottom navigation bar
+  Widget _buildBottomNavigationBar() {
+    return BottomNavigationBar(
+      selectedItemColor: Colors.teal[700],
+      unselectedItemColor: Colors.grey[500],
+      currentIndex: myindex,
+      onTap: (index) {
+        setState(() {
+          myindex = index;
+        });
+      },
+      items: [
+        BottomNavigationBarItem(
+          icon: Icon(Icons.calendar_today),
+          label: 'Today',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.calendar_today_outlined),
+          label: 'Tomorrow',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.calendar_month),
+          label: 'Next Month',
+        ),
+      ],
     );
   }
 }
 
-
 Future<Widget> getLocation() async {
   try {
-    print('I am called');
-
-    // Requesting permission and awaiting the result
     final status = await Permission.location.request();
-
-    // Handling the permission result
     if (status.isGranted) {
-      print("Permission granted");
       return Text("Location access granted");
     } else if (status.isDenied) {
-      print("Permission denied");
       return Text("Location permission denied");
     } else if (status.isPermanentlyDenied) {
-      print("Permission permanently denied");
-      return Text("Location permission permanently denied, go to settings to enable it");
+      return Text("Location permission permanently denied");
     }
   } catch (error) {
-    print("Permission request failed");
-    return Text('Unfortunately, we were not able to get the permission');
+    return Text('Failed to get permission');
   }
-
-  // If something unexpected happens, return default message
   return Text("Unexpected result");
 }
