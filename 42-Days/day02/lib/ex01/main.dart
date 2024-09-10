@@ -3,31 +3,25 @@ import 'package:lottie/lottie.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
+import 'cities.dart';
 
 Future<String> initializeLocation() async {
-  // Request location permission
   final permission = Permission.location;
 
-  // Check and request permission if needed
   if (await permission.isDenied || await permission.isRestricted) {
     await permission.request();
   }
 
-  // Check if permission is permanently denied
   if (await permission.isPermanentlyDenied) {
     throw Exception('Location permission is permanently denied.');
   }
 
-  // Ensure location services are enabled
   bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
   if (!serviceEnabled) {
     throw Exception('Location services are disabled.');
   }
 
-  // Get the location permission status
   LocationPermission locPermission = await Geolocator.checkPermission();
-
-  // Request permission if it hasn't been granted
   if (locPermission == LocationPermission.denied) {
     locPermission = await Geolocator.requestPermission();
     if (locPermission == LocationPermission.denied) {
@@ -40,7 +34,6 @@ Future<String> initializeLocation() async {
   }
 
   try {
-    // If permission is granted, get the current position
     Position position = await Geolocator.getCurrentPosition(
       desiredAccuracy: LocationAccuracy.high,
     );
@@ -48,16 +41,14 @@ Future<String> initializeLocation() async {
     double latitude = position.latitude;
     double longitude = position.longitude;
     print('Latitude: $latitude, Longitude: $longitude');
-
-    // Return the latitude and longitude as a string
     return '$latitude $longitude';
   } catch (e) {
-    // If there's any error, throw it
     throw Exception('Failed to get location: $e');
   }
 }
 
 List<String> threetimes = ['Today', 'Tomorrow', 'Next Week'];
+
 
 Future<String> getLocation() async {
   try {
@@ -96,7 +87,7 @@ class _Ex01State extends State<Ex01> {
 
   void onTabTapped(int iindex) {
     setState(() {
-      index = iindex;  // Update the current index
+      index = iindex;
     });
     _pageController.animateToPage(
       iindex,
@@ -108,55 +99,85 @@ class _Ex01State extends State<Ex01> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white60,
       appBar: AppBar(
-        backgroundColor: Colors.white60,
-
-
-        title: Padding(
-          padding: EdgeInsets.only(top: 5.0), // Add padding to the top
-          child: TextField(
-            controller: _textNameController,
-            decoration: InputDecoration(
-              labelText: 'City name',
-              hintText: 'Marrakesh',
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12.0), // Set the radius here
-              ),
-              suffixIcon: Padding(
-                padding: EdgeInsets.all(2),
-                child: IconButton(
-                  onPressed: () {
-                    setState(() {
-                      inputvalue = "at " + _textNameController.text;
-                      print(_textNameController.text);
+        leading: Container(),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Expanded(
+              child: Container(
+                height: 40,
+                padding: EdgeInsets.symmetric(horizontal: 10),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Autocomplete<String>(
+                  optionsBuilder: (TextEditingValue textEditingValue) {
+                    if (textEditingValue.text == '') {
+                      return const Iterable<String>.empty();
+                    }
+                    return cities.where((String option) {
+                      return option
+                          .toLowerCase()
+                          .contains(textEditingValue.text.toLowerCase());
                     });
                   },
-                  icon: Icon(Icons.search),
-                ),
-              ),
-              prefixIcon: Padding(
-                padding: EdgeInsets.all(5),
-                child: IconButton(
-                  onPressed: () {
-                    _textNameController.clear();
-                    inputvalue = '';
+                  onSelected: (String selection) {
+                    setState(() {
+                      _textNameController.text = selection;
+                      inputvalue = selection;
+                    });
                   },
-                  icon: Icon(Icons.clear),
+                  fieldViewBuilder: (BuildContext context,
+                      TextEditingController textEditingController,
+                      FocusNode focusNode,
+                      VoidCallback onFieldSubmitted) {
+                    return TextField(
+                      controller: textEditingController,
+                      focusNode: focusNode,
+                      decoration: InputDecoration(
+                        hintText: 'Search City',
+                        labelText: 'City name',
+                        border: InputBorder.none,
+                        prefixIcon: IconButton(
+                          onPressed: () {
+                            textEditingController.clear();
+                            setState(() {
+                              inputvalue = '';
+                            });
+                          },
+                          icon: Icon(Icons.clear),
+                        ),
+                        suffixIcon: IconButton(
+                          onPressed: () {
+                            setState(() {
+                              inputvalue =
+                                  "at " + textEditingController.text;
+                              print(textEditingController.text);
+                            });
+                          },
+                          icon: Icon(Icons.search),
+                        ),
+                      ),
+                    );
+                  },
                 ),
               ),
             ),
-          ),
-        ),
-        actions: <Widget>[
-          IconButton(
-            onPressed: () async {
-              try {
-                location = await getLocation();
-                setState(() {
-                  permission = 1;
-                  value = Center(
-                    child: Container(
+            VerticalDivider(
+              color: Colors.black,
+              thickness: 1,
+              width: 20,
+            ),
+            IconButton(
+              icon: Icon(Icons.map, size: 30),
+              onPressed: () async {
+                try {
+                  location = await getLocation();
+                  setState(() {
+                    permission = 1;
+                    value = Center(
                       child: Text(
                         "Your location is $location",
                         style: TextStyle(
@@ -165,18 +186,15 @@ class _Ex01State extends State<Ex01> {
                           fontSize: 20,
                         ),
                       ),
-                    ),
-                  );
-                });
-              } catch (error) {
-                setState(() {
-                  value = Center(
-                    child: Container(
-                      decoration: BoxDecoration(),
+                    );
+                  });
+                } catch (error) {
+                  setState(() {
+                    value = Center(
                       child: Padding(
                         padding: EdgeInsets.all(6),
                         child: Text(
-                          "Oops " + error.toString(),
+                          "Oops! " + error.toString(),
                           style: TextStyle(
                             color: Colors.red,
                             fontWeight: FontWeight.w900,
@@ -184,18 +202,16 @@ class _Ex01State extends State<Ex01> {
                           ),
                         ),
                       ),
-                    ),
-                  );
-                });
-              }
-            },
-            icon: Icon(Icons.map),
-          ),
-        ],
+                    );
+                  });
+                }
+              },
+            ),
+          ],
+        ),
       ),
       body: GestureDetector(
         onPanUpdate: (details) {
-          // Swiping in right direction.
           onPanUpdate:
               (details) {
             if (details.delta.dx > 0) {
@@ -209,11 +225,8 @@ class _Ex01State extends State<Ex01> {
             }
           };
         },
-
-    child: ForBody(value, threetimes[index], inputvalue),
+        child: ForBody(value, threetimes[index], inputvalue),
       ),
-
-
       bottomNavigationBar: BottomNavigationBar(
         onTap: (iindex) {
           setState(() {
