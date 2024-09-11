@@ -4,19 +4,55 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
 import 'cities.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'package:geocoding/geocoding.dart';
 
 
-
+class UserInfo {
+  String location = '';
+  double latitude = 0;
+  double longitude = 0;
+  int permission = 0;
+  String selectedLocation = '';
+  String inputValue = '';
+  String city = '';
+  String country = '';
+  String state = '';
+}
+UserInfo userInfo = UserInfo();
 List<String> threetimes = ['Today', 'Tomorrow', 'Next Week'];
 
-
-Future<String> getLocation() async {
+Future<String> getCityUsingCoordinates(double latitude, double longitude) async {
   try {
-    String location = await initializeLocation();
-    return location;
-  } catch (error) {
-    print('Error: $error');
-    throw error;
+    final url = 'http://api.openweathermap.org/geo/1.0/reverse?lat=$latitude&lon=$longitude&limit=5&appid=a96820cf78d1733bc408c4224bab04d8';
+    final res =  await http.get(Uri.parse(url));
+    var data = jsonDecode(res.body);
+    var result = data[0];
+    print(result);
+    userInfo.country = result['country'];
+    userInfo.city = result['name'];
+    userInfo.location =  result['name']+ ' ' +result['country'] ;
+    return userInfo.location;
+  } catch (e) {
+    print('Error: $e');
+    throw e;
+  }
+}
+
+Future<void> getWheatherData(String searchfor) async
+{
+  try{
+    print(searchfor);
+    final url = 'https://api.openweathermap.org/data/2.5/weather?q=$searchfor&appid=a96820cf78d1733bc408c4224bab04d8';
+    final res =  await http.get(Uri.parse(url));
+    var data = jsonDecode(res.body);
+
+    print(data);
+
+  }catch(e){
+    print(e);
+
   }
 }
 
@@ -29,8 +65,10 @@ class Ex01 extends StatefulWidget {
 
 class _Ex01State extends State<Ex01> {
   final _textNameController = TextEditingController();
-  String inputvalue = '';
   final PageController _pageController = PageController();
+
+
+  int index = 0;
   Widget value = Center(
     child: Text(
       "Please allow the location permission to access your location",
@@ -41,9 +79,6 @@ class _Ex01State extends State<Ex01> {
       ),
     ),
   );
-  String location = "";
-  int permission = 0;
-  int index = 0;
 
   void onTabTapped(int iindex) {
     setState(() {
@@ -62,20 +97,17 @@ class _Ex01State extends State<Ex01> {
       appBar: buildAppBar(),
       body: GestureDetector(
         onPanUpdate: (details) {
-          onPanUpdate:
-              (details) {
-            if (details.delta.dx > 0) {
-              if (index > 0) {
-                onTabTapped(index - 1);
-              }
-            } else if (details.delta.dx < 0) {
-              if (index < 2) {
-                onTabTapped(index + 1);
-              }
+          if (details.delta.dx > 0) {
+            if (index > 0) {
+              onTabTapped(index - 1);
             }
-          };
+          } else if (details.delta.dx < 0) {
+            if (index < 2) {
+              onTabTapped(index + 1);
+            }
+          }
         },
-        child: ForBody(value, threetimes[index], inputvalue),
+        child: ForBody(value, threetimes[index], userInfo.inputValue),
       ),
       bottomNavigationBar: BottomNavigationBar(
         onTap: (iindex) {
@@ -126,115 +158,119 @@ class _Ex01State extends State<Ex01> {
 
   IconButton iconMapButtonChild() {
     return IconButton(
-        icon: Icon(Icons.map, size: 30),
-        onPressed: () async {
-          try {
-            location = await getLocation();
-            setState(() {
-              permission = 1;
-              value = Center(
+      icon: Icon(Icons.map, size: 30),
+      onPressed: () async {
+        try {
+          final List<double> directions = await initializeLocation();
+          userInfo.latitude = directions[1];
+          userInfo.longitude = directions[0];
+          String city = await getCityUsingCoordinates(userInfo.latitude, userInfo.longitude);
+          getWheatherData(userInfo.city);
+          setState(() {
+            userInfo.permission = 1;
+            userInfo.location = city; // Update location
+            value = Center(
+              child: Text(
+                "Your location is ${userInfo.location}",
+                style: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.w900,
+                  fontSize: 20,
+                ),
+              ),
+            );
+          });
+        } catch (error) {
+          print(error);
+          setState(() {
+            value = Center(
+              child: Padding(
+                padding: EdgeInsets.all(6),
                 child: Text(
-                  "Your location is $location",
+                  "Oops! " + error.toString(),
                   style: TextStyle(
-                    color: Colors.black,
+                    color: Colors.red,
                     fontWeight: FontWeight.w900,
-                    fontSize: 20,
+                    fontSize: 25,
                   ),
                 ),
-              );
-            });
-          } catch (error) {
-            setState(() {
-              value = Center(
-                child: Padding(
-                  padding: EdgeInsets.all(6),
-                  child: Text(
-                    "Oops! " + error.toString(),
-                    style: TextStyle(
-                      color: Colors.red,
-                      fontWeight: FontWeight.w900,
-                      fontSize: 25,
-                    ),
-                  ),
-                ),
-              );
-            });
-          }
-        },
-      );
+              ),
+            );
+          });
+        }
+      },
+    );
   }
 
   Expanded ExpandChild() {
     return Expanded(
-        child: Container(
-          height: 40,
-          padding: EdgeInsets.symmetric(horizontal: 10),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: autocompleteContainerChild(),
+      child: Container(
+        height: 40,
+        padding: EdgeInsets.symmetric(horizontal: 10),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(10),
         ),
-      );
+        child: autocompleteContainerChild(),
+      ),
+    );
   }
 
   Autocomplete<String> autocompleteContainerChild() {
     return Autocomplete<String>(
-          optionsBuilder: (TextEditingValue textEditingValue) {
-            if (textEditingValue.text == '') {
-              return const Iterable<String>.empty();
-            }
-            return cities.where((String option) {
-              return option
-                  .toLowerCase()
-                  .contains(textEditingValue.text.toLowerCase());
-            });
-          },
-          onSelected: (String selection) {
-            setState(() {
-              _textNameController.text = selection;
-              inputvalue = selection;
-            });
-          },
-          fieldViewBuilder: (BuildContext context,
-              TextEditingController textEditingController,
-              FocusNode focusNode,
-              VoidCallback onFieldSubmitted) {
-            return TextField(
-              controller: textEditingController,
-              focusNode: focusNode,
-              decoration: InputDecoration(
-                hintText: 'Search City',
-                labelText: 'City name',
-                border: InputBorder.none,
-                prefixIcon: IconButton(
-                  onPressed: () {
-                    textEditingController.clear();
-                    setState(() {
-                      inputvalue = '';
-                    });
-                  },
-                  icon: Icon(Icons.clear),
-                ),
-                suffixIcon: IconButton(
-                  onPressed: () {
-                    setState(() {
-                      inputvalue =
-                          "at " + textEditingController.text;
-                      print(textEditingController.text);
-                    });
-                  },
-                  icon: Icon(Icons.search),
-                ),
-              ),
-            );
-          },
+      optionsBuilder: (TextEditingValue textEditingValue) {
+        if (textEditingValue.text == '') {
+          return const Iterable<String>.empty();
+        }
+        return cities.where((String option) {
+          return option
+              .toLowerCase()
+              .contains(textEditingValue.text.toLowerCase());
+        });
+      },
+      onSelected: (String selection) {
+        setState(() {
+          _textNameController.text = selection;
+          userInfo.inputValue = selection;
+          getWheatherData(userInfo.inputValue);
+        });
+      },
+      fieldViewBuilder: (BuildContext context,
+          TextEditingController textEditingController,
+          FocusNode focusNode,
+          VoidCallback onFieldSubmitted) {
+        return TextField(
+          controller: textEditingController,
+          focusNode: focusNode,
+          decoration: InputDecoration(
+            hintText: 'Search City',
+            border: InputBorder.none,
+            prefixIcon: IconButton(
+              onPressed: () {
+                textEditingController.clear();
+                setState(() {
+                  userInfo.inputValue = '';
+                });
+              },
+              icon: Icon(Icons.clear),
+            ),
+            suffixIcon: IconButton(
+              onPressed: () {
+                setState(() {
+                  userInfo.inputValue = userInfo.selectedLocation;
+                });
+              },
+              icon: Icon(Icons.search),
+            ),
+          ),
         );
+      },
+    );
   }
 }
 
 Widget ForBody(Widget value, String Value2, String city) {
-  return Container(
+  return Center(
     child: Padding(
       padding: EdgeInsets.all(20),
       child: Wrap(

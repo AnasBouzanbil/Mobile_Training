@@ -2,6 +2,7 @@ import 'package:day02/ex00/main.dart';
 import 'package:day02/ex01/main.dart';
 import 'package:day02/ex02/main.dart';
 import 'package:flutter/material.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 
 void main() {
   runApp(const MyApp());
@@ -26,11 +27,30 @@ class MyApp extends StatelessWidget {
   }
 }
 
+
+void CheckINternetConection() async
+{
+  bool isConnected = await InternetConnectionChecker().hasConnection;
+  if (isConnected) {
+    print('Device is connected to the internet');
+  } else {
+    print('Device is not connected to the internet');
+  }
+}
+
+
+
+
+
+
+
+
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    CheckINternetConection();
     return Scaffold(
       appBar: AppBar(
         title: const Text('Home Screen'),

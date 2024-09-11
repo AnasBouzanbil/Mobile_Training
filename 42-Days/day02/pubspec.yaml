@@ -40,6 +40,8 @@ dependencies:
   fluttertoast: ^8.2.8
   geolocator: ^13.0.1
   flutter_typeahead: ^5.2.0
+  geocoding: ^3.0.0
+  internet_connection_checker: ^2.0.0
 
 dev_dependencies:
   flutter_test:

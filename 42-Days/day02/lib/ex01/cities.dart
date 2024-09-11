@@ -209,7 +209,7 @@ List<String> cities = [
 "Bruges Flanders, Belgium",
 ];
 
-Future<String> initializeLocation() async {
+Future<List<double>> initializeLocation() async {
   final permission = Permission.location;
 
   if (await permission.isDenied || await permission.isRestricted) {
@@ -245,7 +245,7 @@ Future<String> initializeLocation() async {
     double latitude = position.latitude;
     double longitude = position.longitude;
     print('Latitude: $latitude, Longitude: $longitude');
-    return '$latitude $longitude';
+    return [longitude, latitude];
   } catch (e) {
     throw Exception('Failed to get location: $e');
   }
