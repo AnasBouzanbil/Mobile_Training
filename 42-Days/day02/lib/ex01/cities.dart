@@ -1,3 +1,6 @@
+import 'package:permission_handler/permission_handler.dart';
+import 'package:geolocator/geolocator.dart';
+
 List<String> cities = [
 "Marrakesh Marrakesh-Safi, Morocco",
 "Casablanca Casablanca-Settat, Morocco",
@@ -205,3 +208,45 @@ List<String> cities = [
 "Ghent Flanders, Belgium",
 "Bruges Flanders, Belgium",
 ];
+
+Future<String> initializeLocation() async {
+  final permission = Permission.location;
+
+  if (await permission.isDenied || await permission.isRestricted) {
+    await permission.request();
+  }
+
+  if (await permission.isPermanentlyDenied) {
+    throw Exception('Location permission is permanently denied.');
+  }
+
+  bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+  if (!serviceEnabled) {
+    throw Exception('Location services are disabled.');
+  }
+
+  LocationPermission locPermission = await Geolocator.checkPermission();
+  if (locPermission == LocationPermission.denied) {
+    locPermission = await Geolocator.requestPermission();
+    if (locPermission == LocationPermission.denied) {
+      throw Exception('Location permission denied.');
+    }
+  }
+
+  if (locPermission == LocationPermission.deniedForever) {
+    throw Exception('Location permission is permanently denied.');
+  }
+
+  try {
+    Position position = await Geolocator.getCurrentPosition(
+      desiredAccuracy: LocationAccuracy.high,
+    );
+
+    double latitude = position.latitude;
+    double longitude = position.longitude;
+    print('Latitude: $latitude, Longitude: $longitude');
+    return '$latitude $longitude';
+  } catch (e) {
+    throw Exception('Failed to get location: $e');
+  }
+}
