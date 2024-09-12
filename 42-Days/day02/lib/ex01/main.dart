@@ -8,7 +8,10 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:geocoding/geocoding.dart';
 
+// Define constants
+const String apiKey = 'a96820cf78d1733bc408c4224bab04d8';
 
+// Define models
 class UserInfo {
   String location = '';
   double latitude = 0;
@@ -20,42 +23,20 @@ class UserInfo {
   String country = '';
   String state = '';
 }
+
+class TodayW {
+  String location = '';
+  String degree = '0';
+  String distance = '';
+  String mainWeather = '';
+  String description = '';
+}
+
+// Create instances
+var todayObj = TodayW();
 UserInfo userInfo = UserInfo();
-List<String> threetimes = ['Today', 'Tomorrow', 'Next Week'];
 
-Future<String> getCityUsingCoordinates(double latitude, double longitude) async {
-  try {
-    final url = 'http://api.openweathermap.org/geo/1.0/reverse?lat=$latitude&lon=$longitude&limit=5&appid=a96820cf78d1733bc408c4224bab04d8';
-    final res =  await http.get(Uri.parse(url));
-    var data = jsonDecode(res.body);
-    var result = data[0];
-    print(result);
-    userInfo.country = result['country'];
-    userInfo.city = result['name'];
-    userInfo.location =  result['name']+ ' ' +result['country'] ;
-    return userInfo.location;
-  } catch (e) {
-    print('Error: $e');
-    throw e;
-  }
-}
-
-Future<void> getWheatherData(String searchfor) async
-{
-  try{
-    print(searchfor);
-    final url = 'https://api.openweathermap.org/data/2.5/weather?q=$searchfor&appid=a96820cf78d1733bc408c4224bab04d8';
-    final res =  await http.get(Uri.parse(url));
-    var data = jsonDecode(res.body);
-
-    print(data);
-
-  }catch(e){
-    print(e);
-
-  }
-}
-
+// Main App Widget
 class Ex01 extends StatefulWidget {
   const Ex01({super.key});
 
@@ -66,8 +47,6 @@ class Ex01 extends StatefulWidget {
 class _Ex01State extends State<Ex01> {
   final _textNameController = TextEditingController();
   final PageController _pageController = PageController();
-
-
   int index = 0;
   Widget value = Center(
     child: Text(
@@ -80,15 +59,10 @@ class _Ex01State extends State<Ex01> {
     ),
   );
 
-  void onTabTapped(int iindex) {
-    setState(() {
-      index = iindex;
-    });
-    _pageController.animateToPage(
-      iindex,
-      duration: Duration(milliseconds: 300),
-      curve: Curves.easeInOut,
-    );
+  @override
+  void initState() {
+    super.initState();
+    checkPermissionAndFetchWeather();
   }
 
   @override
@@ -98,21 +72,18 @@ class _Ex01State extends State<Ex01> {
       body: GestureDetector(
         onPanUpdate: (details) {
           if (details.delta.dx > 0) {
-            if (index > 0) {
-              onTabTapped(index - 1);
-            }
+            if (index > 0) onTabTapped(index - 1);
           } else if (details.delta.dx < 0) {
-            if (index < 2) {
-              onTabTapped(index + 1);
-            }
+            if (index < 2) onTabTapped(index + 1);
           }
         },
-        child: ForBody(value, threetimes[index], userInfo.inputValue),
+        child: getWidgetForIndex(index),
       ),
       bottomNavigationBar: BottomNavigationBar(
         onTap: (iindex) {
           setState(() {
             index = iindex;
+            if (index == 0 && userInfo.permission == 1) fetchWeatherData();
           });
         },
         currentIndex: index,
@@ -134,6 +105,101 @@ class _Ex01State extends State<Ex01> {
     );
   }
 
+  // API Methods
+  Future<void> fetchWeatherData() async {
+    try {
+      if (userInfo.latitude != 0 && userInfo.longitude != 0) {
+        await getCurrentWeatherByCoordinate();
+      } else {
+        await getCurrentWeather();
+      }
+      setState(() {});
+    } catch (error) {
+      print(error);
+    }
+  }
+
+  Future<void> getCurrentWeather() async {
+    var city = userInfo.city;
+    try {
+      final url = 'https://api.openweathermap.org/data/2.5/weather?q=$city&appid=$apiKey';
+      final res = await http.get(Uri.parse(url));
+      var data = jsonDecode(res.body);
+
+      updateTodayWeather(data);
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  Future<void> getCurrentWeatherByCoordinate() async {
+    String long = userInfo.longitude.toString();
+    String lat = userInfo.latitude.toString();
+    try {
+      final url = 'https://api.openweathermap.org/data/2.5/weather?lat=$lat&lon=$long&appid=$apiKey';
+      final res = await http.get(Uri.parse(url));
+      var data = jsonDecode(res.body);
+
+      updateTodayWeather(data);
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  void updateTodayWeather(dynamic data) {
+    todayObj.location = data['name'];
+    todayObj.degree = (data['main']['temp'] - 273.15).toStringAsFixed(1);
+    todayObj.distance = data['visibility'].toString();
+    todayObj.mainWeather = data['weather'][0]['main'];
+    todayObj.description = data['weather'][0]['description'];
+  }
+
+  Future<String> getCityUsingCoordinates(double latitude, double longitude) async {
+    try {
+      final url = 'http://api.openweathermap.org/geo/1.0/reverse?lat=$latitude&lon=$longitude&limit=5&appid=$apiKey';
+      final res = await http.get(Uri.parse(url));
+      var data = jsonDecode(res.body);
+      var result = data[0];
+
+      userInfo.country = result['country'];
+      userInfo.city = result['name'];
+      userInfo.location = '${result['name']} ${result['country']}';
+      return userInfo.location;
+    } catch (e) {
+      print('Error: $e');
+      throw e;
+    }
+  }
+
+  // Permission and Location Methods
+  void checkPermissionAndFetchWeather() async {
+    if (userInfo.permission == 1) {
+      await fetchWeatherData();
+    }
+  }
+
+  Future<List<double>> initializeLocation() async {
+    var status = await Permission.location.request();
+    if (status.isGranted) {
+      Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+      return [position.longitude, position.latitude];
+    } else {
+      throw Exception("Location permission not granted");
+    }
+  }
+
+  // UI Methods
+  void onTabTapped(int iindex) {
+    setState(() {
+      index = iindex;
+    });
+    _pageController.animateToPage(
+      iindex,
+      duration: Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
+    );
+  }
+
   AppBar buildAppBar() {
     return AppBar(
       leading: Container(),
@@ -145,7 +211,17 @@ class _Ex01State extends State<Ex01> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        ExpandChild(),
+        Expanded(
+          child: Container(
+            height: 40,
+            padding: EdgeInsets.symmetric(horizontal: 10),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: autocompleteContainerChild(),
+          ),
+        ),
         VerticalDivider(
           color: Colors.black,
           thickness: 1,
@@ -164,21 +240,11 @@ class _Ex01State extends State<Ex01> {
           final List<double> directions = await initializeLocation();
           userInfo.latitude = directions[1];
           userInfo.longitude = directions[0];
-          String city = await getCityUsingCoordinates(userInfo.latitude, userInfo.longitude);
-          getWheatherData(userInfo.city);
+          await getCityUsingCoordinates(userInfo.latitude, userInfo.longitude);
+          await fetchWeatherData();
+
           setState(() {
             userInfo.permission = 1;
-            userInfo.location = city; // Update location
-            value = Center(
-              child: Text(
-                "Your location is ${userInfo.location}",
-                style: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.w900,
-                  fontSize: 20,
-                ),
-              ),
-            );
           });
         } catch (error) {
           print(error);
@@ -202,20 +268,6 @@ class _Ex01State extends State<Ex01> {
     );
   }
 
-  Expanded ExpandChild() {
-    return Expanded(
-      child: Container(
-        height: 40,
-        padding: EdgeInsets.symmetric(horizontal: 10),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: autocompleteContainerChild(),
-      ),
-    );
-  }
-
   Autocomplete<String> autocompleteContainerChild() {
     return Autocomplete<String>(
       optionsBuilder: (TextEditingValue textEditingValue) {
@@ -223,16 +275,16 @@ class _Ex01State extends State<Ex01> {
           return const Iterable<String>.empty();
         }
         return cities.where((String option) {
-          return option
-              .toLowerCase()
-              .contains(textEditingValue.text.toLowerCase());
+          return option.toLowerCase().contains(textEditingValue.text.toLowerCase());
         });
       },
-      onSelected: (String selection) {
+      onSelected: (String selection) async {
+        _textNameController.text = selection;
+        userInfo.inputValue = selection;
+        userInfo.city = selection.split(' ')[0];
+        await fetchWeatherData();
         setState(() {
-          _textNameController.text = selection;
-          userInfo.inputValue = selection;
-          getWheatherData(userInfo.inputValue);
+          userInfo.permission = 1;
         });
       },
       fieldViewBuilder: (BuildContext context,
@@ -250,6 +302,7 @@ class _Ex01State extends State<Ex01> {
                 textEditingController.clear();
                 setState(() {
                   userInfo.inputValue = '';
+                  userInfo.permission = 0;
                 });
               },
               icon: Icon(Icons.clear),
@@ -267,31 +320,133 @@ class _Ex01State extends State<Ex01> {
       },
     );
   }
+
+  Widget getWidgetForIndex(int index) {
+    switch (index) {
+      case 0:
+        return Today();
+      case 1:
+        return Tomorrow();
+      case 2:
+        return Month();
+      default:
+        return Today();
+    }
+  }
 }
 
-Widget ForBody(Widget value, String Value2, String city) {
-  return Center(
-    child: Padding(
-      padding: EdgeInsets.all(20),
-      child: Wrap(
-        children: [
-          Container(
-            child: Center(
-              child: Text(
-                Value2 + " " + city,
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 25,
-                  decoration: TextDecoration.underline,
-                  fontWeight: FontWeight.w900,
-                ),
+// Weather Widgets
+Widget Today() {
+  return userInfo.permission == 1
+      ? Center(
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          padding: EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                todayObj.location,
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
+              SizedBox(height: 8.0),
+              Text(
+                todayObj.degree,
+                style: TextStyle(fontSize: 18),
+              ),
+              SizedBox(height: 8.0),
+              Text(
+                todayObj.mainWeather,
+                style: TextStyle(fontSize: 18),
+              ),
+              SizedBox(height: 8.0),
+              Text(
+                todayObj.description,
+                style: TextStyle(fontSize: 18),
+              ),
+              SizedBox(height: 8.0),
+              Text(
+                todayObj.distance,
+                style: TextStyle(fontSize: 18),
+              ),
+            ],
+          ),
+        ),
+      ],
+    ),
+  )
+      : PermissionRequest();
+}
+
+Widget Tomorrow() {
+  return userInfo.permission == 1
+      ? Center(
+    child: Row(
+      children: [
+        Container(
+          child: Center(
+            child: Wrap(
+              children: [
+                Text("data"),
+              ],
             ),
           ),
-          SizedBox(height: 40),
+        ),
+      ],
+    ),
+  )
+      : PermissionRequest();
+}
+
+Widget Month() {
+  return userInfo.permission == 1
+      ? Center(
+    child: Row(
+      children: [
+        Container(
+          child: Center(
+            child: Wrap(
+              children: [
+                Text("data"),
+              ],
+            ),
+          ),
+        ),
+      ],
+    ),
+  )
+      : PermissionRequest();
+}
+
+Widget PermissionRequest() {
+  return Center(
+    child: Container(
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          image: NetworkImage("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSBmxosFVfhkZkQTS9-OeVvt_3HzsBZNQa4gg&s"),
+          fit: BoxFit.cover,
+        ),
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
           Container(
-            child: Center(
-              child: value,
+            decoration: BoxDecoration(
+              color: Colors.black87,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            padding: EdgeInsets.all(16),
+            child: Text(
+              'Please search for a city or press the map icon at the top to allow permission.',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+              textAlign: TextAlign.center,
             ),
           ),
         ],
