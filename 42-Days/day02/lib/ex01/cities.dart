@@ -250,3 +250,94 @@ Future<List<double>> initializeLocation() async {
     throw Exception('Failed to get location: $e');
   }
 }
+
+
+const String apiKey = 'a96820cf78d1733bc408c4224bab04d8';
+
+// Define models
+class UserInfo {
+  String location = '';
+  double latitude = 0;
+  double longitude = 0;
+  int permission = 0;
+  String selectedLocation = '';
+  String inputValue = '';
+  String city = '';
+  String country = '';
+  String state = '';
+}
+class TodayW {
+  String location = '';
+  String degree = '0';
+  String distance = '';
+  String mainWeather = '';
+  String description = '';
+}
+
+class TomorrowClass {
+  String time = '';
+  String degree = '';
+  String distance = '';
+  String location = '';
+
+  TomorrowClass(this.time, this.degree, this.distance);
+}
+
+class MonthClass {
+  String dayName = '';
+  String degree = '';
+  String description = '';
+
+  MonthClass(this.dayName, this.degree, this.description);
+}
+
+List<TomorrowClass> tom = [];
+List<MonthClass> mon = [];
+
+void initializeLists() {
+  // Initialize 'tom' with data for tomorrow's weather from 00:00 to 11:00
+  tom = [
+    TomorrowClass('00:00', '9.3', '17.3km/s'),
+    TomorrowClass('01:00', '9.1', '6.3km/s'),
+    TomorrowClass('02:00', '7.1', '3.3km/s'),
+    TomorrowClass('03:00', '6.8', '5.1km/s'),
+    TomorrowClass('04:00', '6.5', '4.7km/s'),
+    TomorrowClass('05:00', '6.2', '4.3km/s'),
+    TomorrowClass('06:00', '6.0', '3.8km/s'),
+    TomorrowClass('07:00', '5.8', '3.2km/s'),
+    TomorrowClass('08:00', '5.6', '2.9km/s'),
+    TomorrowClass('09:00', '5.5', '2.6km/s'),
+    TomorrowClass('10:00', '5.4', '2.3km/s'),
+    TomorrowClass('11:00', '5.2', '2.1km/s'),
+    TomorrowClass('12:00', '5.0', '1.9km/s'),
+    TomorrowClass('13:00', '6.5', '2.4km/s'),
+    TomorrowClass('14:00', '7.8', '3.0km/s'),
+    TomorrowClass('15:00', '8.1', '3.3km/s'),
+    TomorrowClass('16:00', '8.4', '3.5km/s'),
+    TomorrowClass('17:00', '8.6', '3.6km/s'),
+    TomorrowClass('18:00', '8.8', '4.0km/s'),
+    TomorrowClass('19:00', '9.0', '4.2km/s'),
+    TomorrowClass('20:00', '9.3', '4.5km/s'),
+    TomorrowClass('21:00', '9.5', '4.8km/s'),
+    TomorrowClass('22:00', '9.7', '5.0km/s')
+  ];
+
+
+  // Initialize 'mon' with data for the month's weather forecast
+  mon = [
+    MonthClass('2024-03-03', '0.1°C', 'Overcast'),
+    MonthClass('2024-03-04', '-0.2°C', 'Overcast'),
+    MonthClass('2024-03-05', '3.2°C', 'Light Rain'),
+    MonthClass('2024-03-06', '5.0°C', 'Cloudy'),
+    MonthClass('2024-03-07', '6.8°C', 'Sunny'),
+    MonthClass('2024-03-08', '7.3°C', 'Partly Cloudy'),
+    MonthClass('2024-03-09', '9.1°C', 'Rain Showers'),
+    MonthClass('2024-03-10', '8.7°C', 'Thunderstorms'),
+    MonthClass('2024-03-11', '7.9°C', 'Windy'),
+    MonthClass('2024-03-12', '6.4°C', 'Snow'),
+    MonthClass('2024-03-13', '5.2°C', 'Clear'),
+  ];
+}
+// Create instances
+var todayObj = TodayW();
+UserInfo userInfo = UserInfo();

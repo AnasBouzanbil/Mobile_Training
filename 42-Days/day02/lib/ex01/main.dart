@@ -7,34 +7,10 @@ import 'cities.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:geocoding/geocoding.dart';
+import 'package:fl_chart/fl_chart.dart';
 
 // Define constants
-const String apiKey = 'a96820cf78d1733bc408c4224bab04d8';
 
-// Define models
-class UserInfo {
-  String location = '';
-  double latitude = 0;
-  double longitude = 0;
-  int permission = 0;
-  String selectedLocation = '';
-  String inputValue = '';
-  String city = '';
-  String country = '';
-  String state = '';
-}
-
-class TodayW {
-  String location = '';
-  String degree = '0';
-  String distance = '';
-  String mainWeather = '';
-  String description = '';
-}
-
-// Create instances
-var todayObj = TodayW();
-UserInfo userInfo = UserInfo();
 
 // Main App Widget
 class Ex01 extends StatefulWidget {
@@ -199,33 +175,31 @@ class _Ex01State extends State<Ex01> {
       curve: Curves.easeInOut,
     );
   }
-
   AppBar buildAppBar() {
     return AppBar(
-      leading: Container(),
+      automaticallyImplyLeading: false,
       title: AppBarTitleRow(),
+      centerTitle: true, // Ensure title content is centered
     );
   }
 
-  Row AppBarTitleRow() {
+  Widget AppBarTitleRow() {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.center, // Center all widgets
       children: [
         Expanded(
-          child: Container(
-            height: 40,
-            padding: EdgeInsets.symmetric(horizontal: 10),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(10),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0), // Add horizontal padding for better spacing
+            child: Container(
+              height: 50,
+              child: autocompleteContainerChild(),
             ),
-            child: autocompleteContainerChild(),
           ),
         ),
-        VerticalDivider(
-          color: Colors.black,
-          thickness: 1,
-          width: 20,
+        Container(
+          width: 2, // Thickness of the line
+          height: 30, // Height of the line
+          color: Colors.black87, // Color of the line
         ),
         iconMapButtonChild(),
       ],
@@ -234,38 +208,41 @@ class _Ex01State extends State<Ex01> {
 
   IconButton iconMapButtonChild() {
     return IconButton(
-      icon: Icon(Icons.map, size: 30),
-      onPressed: () async {
-        try {
-          final List<double> directions = await initializeLocation();
-          userInfo.latitude = directions[1];
-          userInfo.longitude = directions[0];
-          await getCityUsingCoordinates(userInfo.latitude, userInfo.longitude);
-          await fetchWeatherData();
-
-          setState(() {
-            userInfo.permission = 1;
-          });
-        } catch (error) {
-          print(error);
-          setState(() {
-            value = Center(
-              child: Padding(
-                padding: EdgeInsets.all(6),
-                child: Text(
-                  "Oops! " + error.toString(),
-                  style: TextStyle(
-                    color: Colors.red,
-                    fontWeight: FontWeight.w900,
-                    fontSize: 25,
-                  ),
-                ),
-              ),
-            );
-          });
-        }
-      },
+      icon: Icon(Icons.add_location_alt, size: 30),
+      onPressed: OnpressedMapicon,
     );
+  }
+
+  void OnpressedMapicon() async {
+    try {
+      final List<double> directions = await initializeLocation();
+      userInfo.latitude = directions[1];
+      userInfo.longitude = directions[0];
+      await getCityUsingCoordinates(userInfo.latitude, userInfo.longitude);
+      await fetchWeatherData();
+
+      setState(() {
+        initializeLists();
+        userInfo.permission = 1;
+      });
+    } catch (error) {
+      print(error);
+      setState(() {
+        Center(
+          child: Padding(
+            padding: EdgeInsets.all(6),
+            child: Text(
+              "Oops! " + error.toString(),
+              style: TextStyle(
+                color: Colors.red,
+                fontWeight: FontWeight.w900,
+                fontSize: 25,
+              ),
+            ),
+          ),
+        );
+      });
+    }
   }
 
   Autocomplete<String> autocompleteContainerChild() {
@@ -284,9 +261,11 @@ class _Ex01State extends State<Ex01> {
         userInfo.city = selection.split(' ')[0];
         await fetchWeatherData();
         setState(() {
+          initializeLists();
           userInfo.permission = 1;
         });
       },
+
       fieldViewBuilder: (BuildContext context,
           TextEditingController textEditingController,
           FocusNode focusNode,
@@ -295,29 +274,43 @@ class _Ex01State extends State<Ex01> {
           controller: textEditingController,
           focusNode: focusNode,
           decoration: InputDecoration(
-            hintText: 'Search City',
-            border: InputBorder.none,
-            prefixIcon: IconButton(
-              onPressed: () {
-                textEditingController.clear();
-                setState(() {
-                  userInfo.inputValue = '';
-                  userInfo.permission = 0;
-                });
-              },
-              icon: Icon(Icons.clear),
-            ),
-            suffixIcon: IconButton(
-              onPressed: () {
-                setState(() {
-                  userInfo.inputValue = userInfo.selectedLocation;
-                });
-              },
-              icon: Icon(Icons.search),
-            ),
+            border: InputBorder.none,     // Removes the border
+            labelText: 'City Name', // Label text
+            hintText: 'Enter city to search', // Hint text
+            prefixIcon: Icon(Icons.search),
+
+            contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
           ),
         );
       },
+        optionsViewBuilder: (BuildContext context, AutocompleteOnSelected<String> onSelected, Iterable<String> options) {
+          return Align(
+            alignment: Alignment.topLeft,
+            child: Material(
+              elevation: 4.0,
+              child: Container(
+                width: MediaQuery.of(context).size.width * 0.9,
+                child: ListView.builder(
+                  padding: EdgeInsets.all(8.0),
+                  itemCount: options.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    final String option = options.elementAt(index);
+                    return GestureDetector(
+                      onTap: () {
+                        onSelected(option);
+                      },
+                      child: ListTile(
+                        leading: Icon(Icons.location_city, color: Colors.blue), // Custom widget: icon
+                        title: Text('option'), // Custom widget: text
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ),
+          );
+          }
+
     );
   }
 
@@ -383,40 +376,58 @@ Widget Today() {
 
 Widget Tomorrow() {
   return userInfo.permission == 1
-      ? Center(
-    child: Row(
-      children: [
-        Container(
-          child: Center(
-            child: Wrap(
+      ?Column(
+    children: [
+      Center(
+        child: Text(userInfo.inputValue),
+      ),
+      Expanded(
+        child: ListView.builder(
+          itemCount: tom.length,
+          itemBuilder: (context, index){
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                Text("data"),
+                Text(tom[index].time),
+                Text(tom[index].degree),
+                Text(tom[index].distance),
+
               ],
-            ),
-          ),
-        ),
-      ],
-    ),
+            );
+          },
+        )
+      ),
+    ],
   )
       : PermissionRequest();
 }
-
 Widget Month() {
   return userInfo.permission == 1
-      ? Center(
-    child: Row(
+      ? Column(
+    children: [
+      Center(
+        child: Wrap(
       children: [
-        Container(
-          child: Center(
-            child: Wrap(
+            Text(userInfo.inputValue),
+    ],
+        )
+      ),
+      Expanded(
+        child: ListView.builder(
+          itemCount: mon.length,
+          itemBuilder: (context, index) {
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                Text("data"),
+                Text(mon[index].dayName),
+                Text(mon[index].degree),
+                Text(mon[index].description),
               ],
-            ),
-          ),
+            );
+          },
         ),
-      ],
-    ),
+      ),
+    ],
   )
       : PermissionRequest();
 }
