@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "90482532401",
+    "project_id": "elhazin2001",
+    "storage_bucket": "elhazin2001.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:90482532401:android:f424901814355af055f510",
+        "android_client_info": {
+          "package_name": "com.example.untitled1"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAa0LDn9ZHjp1H2gre6m9dcKPrtddJIO48"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
