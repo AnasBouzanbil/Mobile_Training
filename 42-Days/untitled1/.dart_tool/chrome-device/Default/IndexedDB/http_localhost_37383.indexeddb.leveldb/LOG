@@ -1,0 +1,27 @@
+2024/09/17-06:25:28.455 19c3 Creating DB /tmp/flutter_tools.RVLIKZ/flutter_tools_chrome_device.XDRRRL/Default/IndexedDB/http_localhost_37383.indexeddb.leveldb since it was missing.
+2024/09/17-06:25:28.479 19c3 Reusing MANIFEST /tmp/flutter_tools.RVLIKZ/flutter_tools_chrome_device.XDRRRL/Default/IndexedDB/http_localhost_37383.indexeddb.leveldb/MANIFEST-000001
+2024/09/17-06:25:28.495 19c4 Level-0 table #5: started
+2024/09/17-06:25:28.497 19c4 Level-0 table #5: 1308 bytes OK
+2024/09/17-06:25:28.502 19c4 Delete type=0 #3
+2024/09/17-06:25:28.502 19c2 Manual compaction at level-0 from '\x00\x01\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00\x02\x00\x00\x00' @ 0 : 0; will stop at (end)
+2024/09/17-06:46:15.680 19c4 Level-0 table #7: started
+2024/09/17-06:46:15.683 19c4 Level-0 table #7: 4508 bytes OK
+2024/09/17-06:46:15.686 19c4 Delete type=0 #4
+2024/09/17-06:46:15.687 19c3 Manual compaction at level-0 from '\x00\x04\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00\x05\x00\x00\x00' @ 0 : 0; will stop at (end)
+2024/09/17-06:46:21.693 19d1 Level-0 table #9: started
+2024/09/17-06:46:21.698 19d1 Level-0 table #9: 3457 bytes OK
+2024/09/17-06:46:21.700 19d1 Delete type=0 #6
+2024/09/17-06:46:21.700 19c2 Manual compaction at level-0 from '\x00\x05\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00\x06\x00\x00\x00' @ 0 : 0; will stop at '\x00\x05\x00\x00\x05' @ 203 : 1
+2024/09/17-06:46:21.700 19c2 Compacting 1@0 + 1@1 files
+2024/09/17-06:46:21.703 19c2 Generated table #10@0: 70 keys, 1629 bytes
+2024/09/17-06:46:21.703 19c2 Compacted 1@0 + 1@1 files => 1629 bytes
+2024/09/17-06:46:21.706 19c2 compacted to: files[ 0 1 1 0 0 0 0 ]
+2024/09/17-06:46:21.706 19c2 Delete type=2 #9
+2024/09/17-06:46:21.706 19c2 Manual compaction at level-0 from '\x00\x05\x00\x00\x05' @ 203 : 1 .. '\x00\x06\x00\x00\x00' @ 0 : 0; will stop at (end)
+2024/09/17-06:47:23.295 19c3 Compacting 1@1 + 1@2 files
+2024/09/17-06:47:23.320 19c3 Generated table #11@1: 38 keys, 1156 bytes
+2024/09/17-06:47:23.320 19c3 Compacted 1@1 + 1@2 files => 1156 bytes
+2024/09/17-06:47:23.324 19c3 compacted to: files[ 0 0 1 0 0 0 0 ]
+2024/09/17-06:47:23.324 19c3 Delete type=2 #7
+2024/09/17-06:47:23.324 19c3 Delete type=2 #10
+2024/09/17-06:47:23.324 19c3 Delete type=2 #5
