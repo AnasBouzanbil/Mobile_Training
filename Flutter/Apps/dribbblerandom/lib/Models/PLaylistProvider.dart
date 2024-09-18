@@ -36,7 +36,18 @@ class PLayListProvider extends ChangeNotifier {
 
   // Constructor
   PLayListProvider() {
-    // _listenToDuration();
+    _listenToDuration();
+  }
+  Icon pauseIcon = Icon(Icons.pause);
+  Icon reumeIcon = Icon(Icons.play_arrow);
+
+
+  Icon get_icon(){
+    if (isPlaying)
+      {
+        return pauseIcon;
+      }
+    return reumeIcon;
   }
 
   void play() async {
@@ -100,6 +111,7 @@ class PLayListProvider extends ChangeNotifier {
   }
 
   void playNext() {
+// _audioPlayer.stop();
     if (_currentSongIndex != null) {
       if (_currentSongIndex! < _playList.length - 1) {
         _currentSongIndex = _currentSongIndex! + 1;
@@ -112,6 +124,8 @@ class PLayListProvider extends ChangeNotifier {
   }
 
   void playPrevious() {
+
+    // _audioPlayer.stop();
     if (_currentSongIndex != null) {
       if (_currentDuration.inSeconds > 10) {
         seek(Duration.zero);
