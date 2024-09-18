@@ -1,3 +1,4 @@
+import 'package:dribbblerandom/Models/PLaylistProvider.dart';
 import 'package:dribbblerandom/Themes/Light_Modes.dart';
 import 'package:dribbblerandom/Themes/themeProvider.dart';
 import 'package:dribbblerandom/pages/HomePage.dart';
@@ -6,7 +7,12 @@ import 'package:provider/provider.dart';
 
 void main() {
   runApp(
-    ChangeNotifierProvider(create: (context)=>ThemeProvider(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => ThemeProvider()),
+        ChangeNotifierProvider(create: (context) => PLayListProvider())
+      ],
+
 
    child: const     MyApp()
 
