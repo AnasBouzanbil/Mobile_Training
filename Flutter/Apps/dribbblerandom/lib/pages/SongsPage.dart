@@ -23,7 +23,7 @@ class _SongspLayerState extends State<SongspLayer> {
       builder: (context, value , child) {
 
         final playlist = value.playlist;
-        final currentsong = playlist[value.currentsong ?? 0];
+        final currentsong = playlist[value.currentSongIndex ?? 0];
 
 
 
@@ -126,7 +126,7 @@ class _SongspLayerState extends State<SongspLayer> {
                                 child: GestureDetector(
 
                                   onTap: () {
-
+                                    value.pauseOrResume();
                                   },
                                   child: Neubox(child: Icon(Icons.play_arrow)),
                                 )),

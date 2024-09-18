@@ -1,6 +1,6 @@
-import 'package:audioplayers/audioplayers.dart';
-import 'package:dribbblerandom/Models/Music.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:flutter/material.dart';
+import 'package:dribbblerandom/Models/Music.dart';
 
 class PLayListProvider extends ChangeNotifier {
   final List<Music> _playList = [
@@ -8,27 +8,24 @@ class PLayListProvider extends ChangeNotifier {
     Music(albumeImagePath: "assets/images/solide.jpeg", artistName: "Hassa1", songName: "Solide", songPath: "assets/audio/HASSA1 - SOLIDE.mp3"),
     Music(albumeImagePath: "assets/images/default.jpeg", artistName: "Hassa1 x FLVCK", songName: "lA bANDERA", songPath: "assets/audio/HASSA1 X @FLVCK - LA BANDERA.mp3"),
     Music(albumeImagePath: "assets/images/wsalnimsg.jpeg", artistName: "Hassa1 x FLVCK", songName: "wsalni msg", songPath: "assets/audio/HASSA1 X @FLVCK  - WSLANI MSG.mp3"),
-    Music(albumeImagePath: "assets/images/default.jpeg", artistName: "SCOOL", songName: "INARA", songPath: "assets/audio/SCOOL - INARA.mp3"),
+    Music(albumeImagePath: "assets/images/default.jpeg", artistName: "SCOOL", songName: "INARA", songPath: "assets/audio/SCOOLINARA.mp3"),
   ];
 
-  int? _currentsong;
+  int? _currentSongIndex;
   List<Music> get playlist => _playList;
-  int? get currentsong => _currentsong;
+  int? get currentSongIndex => _currentSongIndex;
 
-  bool get isPlayying => isplaying;
+  bool get isPlaying => _isPlaying;
 
   set currentSongIndex(int? newIndex) {
-
-
-    _currentsong = newIndex;
-    if (newIndex != null)
-      {
-        play();
-      }
+    _currentSongIndex = newIndex;
+    if (newIndex != null) {
+      play();
+    }
     notifyListeners();
   }
 
-  bool isplaying = false;
+  bool _isPlaying = false;
   final AudioPlayer _audioPlayer = AudioPlayer();
 
   Duration _currentDuration = Duration.zero;
@@ -39,93 +36,94 @@ class PLayListProvider extends ChangeNotifier {
 
   // Constructor
   PLayListProvider() {
-    _listenToDuration();
+    // _listenToDuration();
   }
 
-
-
   void play() async {
-    if (_currentsong != null) {
-      final String _path = playlist[_currentsong!].songPath;
-      await _audioPlayer.stop();
-      await _audioPlayer.play(AssetSource(_path));
-      isplaying = true;
+    if (_currentSongIndex == null) return;
+
+    final String path = playlist[_currentSongIndex!].songPath;
+
+    try {
+      print(path);
+      await _audioPlayer.setAudioSource(AudioSource.uri(Uri.parse('asset:///$path')));
+      await _audioPlayer.play();
+      _isPlaying = true;
       notifyListeners();
+    } catch (e) {
+      print("Error playing audio: $e");
     }
   }
 
   void _listenToDuration() {
-    _audioPlayer.onDurationChanged.listen((newDuration) {
-      _totalDuration = newDuration;
+    _audioPlayer.durationStream.listen((newDuration) {
+      _totalDuration = newDuration ?? Duration.zero;
       notifyListeners();
     });
 
-    _audioPlayer.onPositionChanged.listen((position) {
+    _audioPlayer.positionStream.listen((position) {
       _currentDuration = position;
       notifyListeners();
     });
 
-    _audioPlayer.onPlayerComplete.listen((event) {
-      isplaying = false;
+    _audioPlayer.playerStateStream.listen((playerState) {
+      _isPlaying = playerState.playing;
+      if (!playerState.playing) {
+        _isPlaying = false;
+      }
       notifyListeners();
     });
   }
 
   void pause() async {
-    _audioPlayer.pause();
-    isplaying = false;
+    await _audioPlayer.pause();
+    _isPlaying = false;
     notifyListeners();
   }
 
-  void resume() async
-  {
-    await _audioPlayer.resume();
-    isplaying = true;
+  void resume() async {
+    await _audioPlayer.play();
+    _isPlaying = true;
     notifyListeners();
   }
-  void PauseOrResume() async
-  {
-    if (isplaying)
-      {
-        pause();
-      }
-    else  {
+
+  void pauseOrResume() async {
+    if (_isPlaying) {
+      pause();
+    } else {
       resume();
     }
-    notifyListeners();
   }
 
-  void seek(Duration _dur) async
-  {
-    await _audioPlayer.seek(_dur);
-    notifyListeners();
+  void seek(Duration duration) async {
+    await _audioPlayer.seek(duration);
   }
-  void PlayNext(){
-    if (_currentsong != null)
-      {
-        if (_currentsong! < _playList.length-1)
-          {
-            _currentsong = _currentsong! + 1;
-          }
-        else
-          _currentsong = 0;
-      }
-  }
-  void PlayPrevious() async {
-    if (currentDuration.inSeconds > 10)
-      {
 
+  void playNext() {
+    if (_currentSongIndex != null) {
+      if (_currentSongIndex! < _playList.length - 1) {
+        _currentSongIndex = _currentSongIndex! + 1;
+      } else {
+        _currentSongIndex = 0;
       }
-    else
-      {
-        if (_currentsong! > 0)
-          {
-            _currentsong = _currentsong! - 1;
-          }
-        else
-          {
-            _currentsong = _playList.length - 1;
-          }
+      play();
+      notifyListeners();
+    }
+  }
+
+  void playPrevious() {
+    if (_currentSongIndex != null) {
+      if (_currentDuration.inSeconds > 10) {
+        seek(Duration.zero);
+      } else {
+        if (_currentSongIndex! > 0) {
+          _currentSongIndex = _currentSongIndex! - 1;
+        } else {
+          _currentSongIndex = _playList.length - 1;
+        }
+        play();
+        notifyListeners();
       }
+    }
   }
 }
