@@ -1,10 +1,13 @@
 import 'package:dribbblerandom/Components/Drawer.dart';
+import 'package:dribbblerandom/Components/NeuBox.dart';
 import 'package:dribbblerandom/Models/Music.dart';
 import 'package:dribbblerandom/Models/PLaylistProvider.dart';
+import 'package:dribbblerandom/pages/Search.dart';
+import 'package:dribbblerandom/pages/SongsList.dart';
 import 'package:dribbblerandom/pages/SongsPage.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({super.key});
@@ -14,31 +17,37 @@ class Homepage extends StatefulWidget {
 }
 
 class _HomepageState extends State<Homepage> {
-
-
-  late final dynamic playlistprovider;
+  int _count = 0;
+  late final PLayListProvider playlistprovider;
+  late List<Widget> _listWi;
 
   @override
   void initState() {
     super.initState();
+
+    // Access the playlistprovider here
     playlistprovider = Provider.of<PLayListProvider>(context, listen: false);
+
+    // Initialize _listWi here, after playlistprovider is available
+    _listWi = [
+      MusicListWidget(),
+      FavMusicListWidget(),
+      SongspLayer(value: playlistprovider.playlist),  // You can pass the playlist here
+    ];
   }
 
-  void goToSong(int index) {
+  void goToSong(List<Music> songList, int index) {
     playlistprovider.currentSongIndex = index;
-    Navigator.push(context, MaterialPageRoute(builder: (context)=> SongspLayer()));
-
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => SongspLayer(value: songList)),
+    );
   }
-
-  static const String routeName = '/homepage'; // Define a route name for the Homepage
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme
-          .of(context)
-          .colorScheme
-          .surface,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
         centerTitle: true,
         title: Text(
@@ -50,7 +59,34 @@ class _HomepageState extends State<Homepage> {
         ),
       ),
       drawer: MyDrawer(),
-      body: Consumer<PLayListProvider>(builder: (context, value, index) {
+      body: _listWi[_count], // Displays the current tab's widget
+      bottomNavigationBar: CurvedNavigationBar(
+        index: _count,
+        height: 60.0,
+        backgroundColor: Colors.blueAccent,
+        color: Colors.white,
+        buttonBackgroundColor: Colors.white,
+        onTap: (index) {
+          setState(() {
+            _count = index;
+          });
+        },
+        items: [
+          Icon(Icons.music_note, size: 30),
+          Icon(Icons.favorite_border, size: 30),
+          Icon(Icons.play_circle),
+        ],
+      ),
+    );
+  }
+}
+
+
+class MusicListWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Neubox(
+      child: Consumer<PLayListProvider>(builder: (context, value, index) {
         final List<Music> playList = value.playlist;
         return ListView.builder(
           itemBuilder: (context, index) {
@@ -58,13 +94,20 @@ class _HomepageState extends State<Homepage> {
             return ListTile(
               title: Text(song.songName),
               subtitle: Text(song.artistName),
-              onTap: ()=>goToSong(index),
+              onTap: () {
+                final playlistprovider = Provider.of<PLayListProvider>(context, listen: false);
+                playlistprovider.currentSongIndex = index;
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => SongspLayer(value: playList)),
+                );
+              },
               leading: SizedBox(
-                width: 50, // Set your desired width
-                height: 50, // Set your desired height
+                width: 50,
+                height: 50,
                 child: Image.asset(
                   song.albumeImagePath,
-                  fit: BoxFit.cover, // Ensures the image covers the box evenly
+                  fit: BoxFit.cover,
                 ),
               ),
             );
@@ -73,5 +116,43 @@ class _HomepageState extends State<Homepage> {
         );
       }),
     );
+  }
+}
+
+
+class FavMusicListWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<PLayListProvider>(builder: (context, value, index) {
+      final List<Music> favList = value.listFav;
+      return ListView.builder(
+        itemBuilder: (context, index) {
+          final song = favList[index];
+          return ListTile(
+            title: Text(song.songName),
+            subtitle: Text(song.artistName),
+            onTap: () {
+              final playlistprovider = Provider.of<PLayListProvider>(context, listen: false);
+              playlistprovider.currentSongIndex = index;
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => SongspLayer(value: value.listFav)),
+              );
+            },
+
+
+            leading: SizedBox(
+              width: 50,
+              height: 50,
+              child: Image.asset(
+                song.albumeImagePath,
+                fit: BoxFit.cover,
+              ),
+            ),
+          );
+        },
+        itemCount: favList.length,
+      );
+    });
   }
 }

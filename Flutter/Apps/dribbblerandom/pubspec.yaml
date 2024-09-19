@@ -38,6 +38,10 @@ dependencies:
   provider: ^6.1.2
   audioplayers: ^6.1.0
   just_audio: ^0.9.40
+  curved_navigation_bar: ^1.0.6
+  http: ^1.2.2
+  dio: ^5.7.0
+  open_file: ^3.5.4
 
 dev_dependencies:
   flutter_test:
@@ -67,6 +71,7 @@ flutter:
     - assets/audio/
     - assets/audio/SCOOLINARA.mp3
     - assets/audio/SCOOLINARA.mp3
+    - assets/images/majatech.jpeg
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 
