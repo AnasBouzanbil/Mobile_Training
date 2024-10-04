@@ -6,6 +6,7 @@ import 'package:listen/presentation/choose_mode/bloc/theme_cubite.dart';
 import 'package:listen/presentation/splash/pages/splash.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
+import 'package:listen/service_locator.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter/foundation.dart';
 
@@ -20,6 +21,7 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform
   );
+  await initializeDepandencies();
   print("OK it is connected");
   runApp(MyApp());
 }

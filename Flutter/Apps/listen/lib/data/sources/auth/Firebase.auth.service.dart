@@ -3,14 +3,14 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:listen/data/models/auth/create_user_req.dart';
 
 abstract class AuthFirebaseService {
-  Future<void> signin();
+  Future<void> signin(CreateUserReq  req);
   Future<void> signup(CreateUserReq  req) ;
 }
 
 class AuthFirebaseServiceImpl extends AuthFirebaseService {
 
   @override
-  Future<void> signin() async {
+  Future<void> signin(CreateUserReq  req) async {
     // Your signin implementation here
   }
 

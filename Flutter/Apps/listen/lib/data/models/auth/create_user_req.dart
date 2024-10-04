@@ -1,18 +1,15 @@
 import 'package:flutter/material.dart';
 
-
-class CreateUserReq
-{
-  String ? userId;
-  String ? fullName;
-  String ? email;
-  String ? password;
-
-
+class CreateUserReq {
+  String? userId;
+  String? fullName;
+  final String email; // Make it non-nullable
+  final String password; // Make it non-nullable
 
   CreateUserReq({
-    this.email,
+    required this.email, // Mark as required
+    required this.password, // Mark as required
     this.fullName,
-    this.userId
+    this.userId,
   });
 }

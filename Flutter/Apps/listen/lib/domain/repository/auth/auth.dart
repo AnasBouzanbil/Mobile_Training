@@ -1,9 +1,11 @@
 import 'dart:ffi';
 
+import 'package:listen/data/models/auth/create_user_req.dart';
+
 abstract class AuthRepository{
 
-  Future<Void> signin();
-  Future<Void> signup();
+  Future<void> signin(CreateUserReq createuserReq);
+  Future<void> signup(CreateUserReq createuserReq);
 
 
 }
