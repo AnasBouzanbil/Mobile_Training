@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:listen/common/widgets/appbar/appbar.dart';
 import 'package:listen/common/widgets/button/basic_app_button.dart';
 import 'package:listen/core/assets/app_images.dart';
 import 'package:listen/core/assets/app_vectors.dart';
 import 'package:listen/core/config/theme/app_colors.dart';
+import 'package:listen/presentation/auth/pages/login.dart';
+import 'package:listen/presentation/auth/pages/signup.dart';
 
 class SignupOrSigninPage extends StatelessWidget {
   const SignupOrSigninPage({super.key});
@@ -13,6 +16,7 @@ class SignupOrSigninPage extends StatelessWidget {
     return Scaffold(
       body: Stack(
         children: [
+          MiniAppbar(),
 
                 // Align(
                 //   alignment: Alignment.topCenter,
@@ -56,11 +60,26 @@ class SignupOrSigninPage extends StatelessWidget {
                   Row(
 
                     children: [
-                      Expanded(flex: 1, child: BasicAppButton(child: Text("Register"), pressed: (){
+                      Expanded(flex: 1, child: BasicAppButton(child: Text("Register",
+                      style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16
+                  ),
+                      ), pressed: (){
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => Signup()));
+
                       })),
                       SizedBox(width: 15,),
 
-                      Expanded(flex: 1, child: BasicAppButton(child: Text("Login"), pressed: (){
+                      Expanded(flex: 1 , child: BasicAppButton(
+                        child: Text("Login",style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                          color: Colors.white
+                        ),),
+                        pressed: (
+                            ){
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => Login()));
                       },)),
                     ],
                   )

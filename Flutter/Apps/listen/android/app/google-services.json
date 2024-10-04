@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "210781595244",
+    "project_id": "listenify-app",
+    "storage_bucket": "listenify-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:210781595244:android:6507c5abe868ad45711a49",
+        "android_client_info": {
+          "package_name": "com.example.yourapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCVymaGgj_jxhBEurY64B1bKl6oeg1uqk8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:210781595244:android:af4763451e595004711a49",
+        "android_client_info": {
+          "package_name": "com.listenify.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCVymaGgj_jxhBEurY64B1bKl6oeg1uqk8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

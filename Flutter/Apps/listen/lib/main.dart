@@ -1,5 +1,7 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:listen/core/config/theme/app_theme.dart';
+import 'package:listen/firebase_options.dart';
 import 'package:listen/presentation/choose_mode/bloc/theme_cubite.dart';
 import 'package:listen/presentation/splash/pages/splash.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,6 +17,10 @@ Future<void> main() async {
         ? HydratedStorage.webStorageDirectory
         : await getApplicationDocumentsDirectory(),
   );
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform
+  );
+  print("OK it is connected");
   runApp(MyApp());
 }
 
