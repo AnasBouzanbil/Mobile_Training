@@ -24,8 +24,8 @@ class _BalanceAndCardState extends State<BalanceAndCard> {
       decoration: BoxDecoration(
         color: Colors.white,
         border: Border.all(
-          color: Colors.black,
-          width: 1.0,
+          color: Colors.grey,
+          width: 0.2,
         ),
         borderRadius: BorderRadius.circular(20), // Optional: adds rounded corners
       ),

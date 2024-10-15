@@ -8,8 +8,11 @@ class Appbar extends StatelessWidget implements PreferredSizeWidget{
   @override
   Widget build(BuildContext context) {
     return Padding(
+
       padding: const EdgeInsets.all(10.0),
       child: AppBar(
+        backgroundColor: Colors.grey.shade200,
+
         title: Image.asset(appImages.cih_logo, width: 50, height: 50,),
         centerTitle: true,
         leading:  Padding(

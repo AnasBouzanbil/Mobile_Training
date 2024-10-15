@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.cih"
+    namespace = "com.example.cih"  // Keep this line with your desired namespace
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
