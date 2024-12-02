@@ -1,0 +1,39 @@
+name: ai_chat
+description: "A new Flutter project."
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.5.4
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+  flutter_native_splash: ^2.4.2
+  riverpod: ^2.6.1
+  flutter_riverpod: ^2.6.1
+  google_generative_ai: ^0.4.6
+  flutter_dotenv: ^5.2.1
+
+dev_dependencies:
+  flutter_launcher_icons: ^0.14.1
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/
+
+# flutter_native_splash:
+#   color: "#42a5f5"
+#   image: assets/splashscreen.png
+#   android: true
+#   ios: true
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/icon.png"

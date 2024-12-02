@@ -1,0 +1,3 @@
+String topRated = "https://api.themoviedb.org/3/movie/top_rated?api_key=eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJjYjhkNjljZjljNmM5NDhlMjQ0MmQ1NDU4MGNjOWU0OCIsIm5iZiI6MTczMTI2NjE0NS4zNTg2ODQ4LCJzdWIiOiI2NzMxMDNkMTU1YmE5NDY4MWZiZDQ5ZmYiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.mrAOqlXVOJUUe-yGHmdD4khFcoA3UAp_CI2K08YaGLM"
+
+
