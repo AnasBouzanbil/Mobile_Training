@@ -1,0 +1,108 @@
+[
+    {
+      "name": "Pole Sport",
+      "description": "Pole sport is a fun and challenging activity that combines dance, acrobatics, and strength training. It helps improve flexibility, coordination, and core strength while boosting confidence and creativity.",
+      "image": "http://10.0.2.15:3000/services/polesport.png",
+      "services": [
+        {
+          "name": "Swimming",
+          "description": "Swimming is a recreational and competitive activity offered at the university pool. It helps improve fitness, strength, and endurance while providing a great way to relax.",
+          "image": "https://www.polesport.org/wp-content/uploads/2019/01/1-1.jpg"
+        },
+        {
+          "name": "Bodybuilding",
+          "description": "The university gym offers bodybuilding programs for students, helping them build muscle and improve physical health through weightlifting and structured training.",
+          "image": "https://www.bodybuilding.com/images/2019/june/5-essential-bodybuilding-tips-for-beginners-v2-700xh.jpg"
+        },
+        {
+          "name": "Yoga",
+          "description": "Yoga sessions are available at the campus wellness center to help students reduce stress, enhance flexibility, and promote mental well-being.",
+          "image": "https://www.yogajournal.com/.image/t_share/MTU5MzQ4NjYwNzQwNjYwNzQw/yj-1910-cover-lead.jpg"
+        },
+        {
+          "name": "Spinning",
+          "description": "The university gym offers spinning classes, a high-intensity workout using stationary bikes, to improve cardiovascular fitness and burn calories.",
+          "image": "https://www.verywellfit.com/thmb/1Z6J9Q1"
+        },
+        {
+          "name": "CrossFit",
+          "description": "CrossFit sessions are available to help students enhance strength, endurance, and overall fitness through a mix of weightlifting, cardio, and bodyweight exercises.",
+          "image": "https://www.crossfit.com/wp-content/uploads/2019/07/CFHQ-20190701-Open-Workout-20.1-1.jpg"
+        },
+        {
+            "name": "Body Building 2",
+            "description": "The university gym offers bodybuilding programs for students, helping them build muscle and improve physical health through weightlifting and structured training.",
+            "image": "https://www.bodybuilding.com/images/2019/june/5-essential-bodybuilding-tips-for-beginners-v2-700xh.jpg"
+        },
+        {
+            "name" : "Football F1",
+            "description": "The university gym offers bodybuilding programs for students, helping them build muscle and improve physical health through weightlifting and structured training.",
+            "image": "https://www.bodybuilding.com/images/2019/june/5-essential-bodybuilding-tips-for-beginners-v2-700xh.jpg"
+        }
+      ]
+    },
+     {
+      "name": "Health Center",
+      "description": "The university health center provides medical services, counseling, and wellness programs to support students' physical and mental health needs.",
+      "image": "http://127.0.0.1:3000/services/HalthCenter.png",
+      "services": [
+        {
+          "name": "Psychological Counseling",
+          "description": "The university provides free counseling services to support students' mental health and emotional well-being through one-on-one sessions with trained psychologists.",
+          "image": "https://www.apa.org/images/2020-03-18-psychologist_tcm7-269349.jpg"
+        },
+        {
+          "name": "Health Checkups",
+          "description": "Basic health checkups and consultations are available at the campus health center to ensure students stay healthy and receive proper medical guidance.",
+          "image": "https://www.health.harvard.edu/media/content/images/sep21_b_well_health_checkup-750x600.jpg"
+        }
+      ]
+    },
+     {
+      "name": "Beauty Lab",
+      "description": "The Beauty Lab offers a range of beauty and grooming services to help students look and feel their best, including haircuts, styling, facials, and nail care.",
+      "image": "http://127.0.0.1:3000/services/HalthCenter.png",
+      "services": [
+        {
+          "name": "Women's Haircuts",
+          "description": "Professional hairstylists for women are available at the Beauty Lab to provide haircuts, styling, and treatments to enhance students' appearance.",
+          "image": "https://www.verywellmind.com/thmb/1Z6J9Q1"
+        },
+        {
+          "name": "Men's Haircuts",
+          "description": "The Beauty Lab offers haircuts, styling, and grooming services for men to help students maintain a polished and professional look.",
+          "image": "https://www.verywellmind.com/thmb/1Z6J9Q1"
+        }
+      ]
+    },
+     {
+      "name": "Start Gate",
+      "description": "The Start Gate is a hub for student entrepreneurs and innovators to develop their ideas, receive mentorship, and access resources to launch successful ventures.",
+      "image": "http://127.0.0.1:3000/services/HalthCenter.png",
+      "services": []
+    },
+     {
+      "name": "Student Center",
+      "description": "The Student Center is a space for students to study, relax, and participate in various activities, fostering a sense of community on campus.",
+      "image": "http://127.0.0.1:3000/services/HalthCenter.png",
+      "services": []
+    },
+     {
+      "name": "Library",
+      "description": "The university library offers a wide range of resources, including books, digital materials, and research assistance, to support academic success.",
+      "image": "http://127.0.0.1:3000/services/HalthCenter.png",
+      "services": [
+        {
+          "name": "Study Rooms",
+          "description": "The library offers private study rooms for students to work on assignments, projects, and research in a quiet and focused environment.",
+          "image": "https://www.verywellmind.com/thmb/1Z6J9Q1"
+        },
+        {
+          "name": "Research Assistance",
+          "description": "Librarians provide research assistance to help students find relevant resources, navigate databases, and improve their academic writing skills.",
+          "image": "https://www.verywellmind.com/thmb/1Z6J9Q1"
+        }
+      ]
+    }
+]
+  

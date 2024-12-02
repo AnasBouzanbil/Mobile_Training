@@ -1,0 +1,131 @@
+{
+    "Emines": {
+      "name": "Emines",
+      "description": "Emines is a university in Morocco that offers a computer science program and other engineering courses.",
+      "image": "https://example.com/emines-campus.jpg",
+      "Announcements": [
+        {
+          "EventName": "Emines Hackathon 2024",
+          "description": "Join the Emines Hackathon, a 24-hour coding competition to innovate and develop unique projects. Starts at 10:00 AM on 15/12/2024.",
+          "image": "https://example.com/hackathon.jpg"
+        },
+        {
+          "EventName": "Startup Pitch Night",
+          "description": "A platform for students to pitch their startup ideas to industry leaders and potential investors. Begins at 6:00 PM on 20/12/2024.",
+          "image": "https://example.com/startup-night.jpg"
+        },
+        {
+          "EventName": "Alumni Networking Event",
+          "description": "Connect with Emines alumni and explore career opportunities. Held in the main auditorium at 4:00 PM on 10/01/2025.",
+          "image": "https://example.com/alumni-event.jpg"
+        }
+      ]
+    },
+    "SAP+D": {
+      "name": "SAP+D",
+      "description": "The School of Architecture, Planning, and Design at UM6P offers programs in architecture and design.",
+      "image": "https://example.com/sapd-campus.jpg",
+      "Announcements": [
+        {
+          "EventName": "Design Exhibition 2024",
+          "description": "Showcasing the innovative projects and designs by SAP+D students. Opens at 11:00 AM on 05/01/2025.",
+          "image": "https://example.com/design-exhibition.jpg"
+        },
+        {
+          "EventName": "Architecture Workshop",
+          "description": "A hands-on workshop focusing on sustainable architecture and green building techniques. Starts at 9:00 AM on 12/01/2025.",
+          "image": "https://example.com/architecture-workshop.jpg"
+        }
+      ],
+      "Staff": [
+        {
+          "name": "Dr. Fatima Zahra El Amrani",
+          "description": "A renowned architect with expertise in sustainable urban planning and green architecture.",
+          "image": "https://example.com/fatima-zahra.jpg",
+          "email": "fatima.elamrani@sapd.um6p.ma"
+        },
+        {
+          "name": "Dr. Ahmed Bennani",
+          "description": "Specialist in contemporary design and advanced construction technologies.",
+          "image": "https://example.com/ahmed-bennani.jpg",
+          "email": "ahmed.bennani@sapd.um6p.ma"
+        }
+      ]
+    },
+    "GTI": {
+      "name": "GTI",
+      "description": "The Global Technology Institute in Morocco offers a wide range of technology-focused academic programs.",
+      "image": "https://example.com/gti-campus.jpg",
+      "Announcements": [
+        {
+          "EventName": "GTI Tech Summit",
+          "description": "Explore the latest trends in AI and data science with industry experts. Starts at 9:00 AM on 25/12/2024.",
+          "image": "https://example.com/tech-summit.jpg"
+        },
+        {
+          "EventName": "Cybersecurity Workshop",
+          "description": "Hands-on cybersecurity training for students. Starts at 2:00 PM on 15/01/2025.",
+          "image": "https://example.com/cybersecurity-workshop.jpg"
+        }
+      ],
+      "Staff": [
+        {
+          "name": "Dr. Youssef Khattabi",
+          "description": "Expert in artificial intelligence and machine learning with over 15 years of academic and industry experience.",
+          "image": "https://example.com/youssef-khattabi.jpg",
+          "email": "youssef.khattabi@gti.ma"
+        }
+      ]
+    },
+    "1337": {
+      "name": "1337",
+      "description": "1337 is a leading coding school in Morocco, known for its innovative approach to computer programming education.",
+      "image": "https://example.com/1337-campus.jpg",
+      "Announcements": [
+        {
+          "EventName": "Code Fiesta 2024",
+          "description": "A week-long celebration of coding with competitions, workshops, and prizes. Starts on 01/12/2024.",
+          "image": "https://example.com/code-fiesta.jpg"
+        },
+        {
+          "EventName": "AI Challenge",
+          "description": "A competition focused on solving real-world problems using artificial intelligence. Starts at 10:00 AM on 08/01/2025.",
+          "image": "https://example.com/ai-challenge.jpg"
+        }
+      ],
+      "Staff": [
+        {
+          "name": "Dr. Soumaya El Fassi",
+          "description": "A data scientist and educator with expertise in big data analytics and cloud computing.",
+          "image": "https://example.com/soumaya-elfassi.jpg",
+          "email": "soumaya.elfassi@1337.ma"
+        }
+      ]
+    },
+    "College of Computing": {
+      "name": "College of Computing",
+      "description": "The College of Computing at UM6P focuses on advanced studies in computer science and engineering.",
+      "image": "https://example.com/college-of-computing.jpg",
+      "Announcements": [
+        {
+          "EventName": "Data Science Week",
+          "description": "A series of seminars and workshops on data science and analytics. Starts on 10/01/2025.",
+          "image": "https://example.com/data-science-week.jpg"
+        },
+        {
+          "EventName": "Cloud Computing Bootcamp",
+          "description": "An intensive training program on cloud technologies. Starts at 9:00 AM on 20/01/2025.",
+          "image": "https://example.com/cloud-bootcamp.jpg"
+        }
+      ],
+      "Staff": [
+        {
+          "name": "Dr. Mohamed Amine Haddadi",
+          "description": "A leading researcher in cloud computing and distributed systems.",
+          "image": "https://example.com/mohamed-amine.jpg",
+          "email": "mohamed.haddadi@um6p.ma"
+        }
+      ]
+    }
+  }
+  

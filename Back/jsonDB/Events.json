@@ -1,0 +1,28 @@
+{
+    "events": [
+        {
+            "id": 1,
+            "name": "Family Day",
+            "description": "Family Day is a day where all the students can bring their families to the campus and show them around",
+            "date": "2021-01-01",
+            "location": "Location 1",
+            "image": "Image 1"
+        },
+        {
+            "id": 2,
+            "name": "Event 2",
+            "description": "Description 2",
+            "date": "2021-02-02",
+            "location": "Location 2",
+            "image": "Image 2"
+        },
+        {
+            "id": 3,
+            "name": "Event 3",
+            "description": "Description 3",
+            "date": "2021-03-03",
+            "location": "Location 3",
+            "image": "Image 3"
+        }
+    ]
+}

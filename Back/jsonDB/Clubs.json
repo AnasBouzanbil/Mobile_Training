@@ -1,0 +1,75 @@
+{
+    "Name": "UM6P Clubs",
+    "description": "This is a list of all clubs in UM6P",
+    "Clubs" : {
+        "Emines BDE": {
+            "name": "Emines BDE",
+            "description": "Emines BDE is the club that organizes all the events in Emines",
+            "image": "http://127.0.0.1:3000/thmb/1Z6J9Q1",
+            "Announcment " : [
+                {
+                    "EventName": "Emines Hackathon",
+                    "description": "Emines Hackathon is a 24h coding competition at Emines in which students compete to build the best project, startoing at 12:00 PM on 12/12/2021",
+                    "image": "http://127.0.0.1:3000/thmb/1Z6J9Q1"
+                },
+                {
+                    "EventName": "Emines BDE Elections",
+                    "description": "Emines BDE Elections are the elections for the new BDE members, starting at 12:00 PM on 12/12/2021",
+                    "image": "https://www.verywellmind.com/thmb/1Z6J9Q1"
+                },
+
+                {
+                    "EventName": "Emines BDE Elections",
+                    "description": "Emines BDE Elections are the elections for the new BDE members, starting at 12:00 PM on 12/12/2021",
+                    "image": "https://www.verywellmind.com/thmb/1Z6J9Q1"
+                }
+            ]
+        },
+        "LeetEvents" :{
+            "name": "LeetEvents",
+            "description": "LeetEvents is the club that organizes all the events in 1337 and um6p",
+            "image" : "https://www.verywellmind.com/thmb/1Z6J9Q1",
+            "Announcment " : [
+                {
+                    "EventName": "LeetEvents Hackathon",
+                    "description": "LeetEvents Hackathon is a 24h coding competition at 1337 in which students compete to build the best project, startoing at 12:00 PM on 12/12/2021",
+                    "image": "https://www.verywellmind.com/thmb/1Z6J9Q1"
+                },
+                {
+                    "EventName": "LeetEvents Elections",
+                    "description": "LeetEvents Elections are the elections for the new LeetEvents members, starting at 12:00 PM on 12/12/2021",
+                    "image": "https://www.verywellmind.com/thmb/1Z6J9Q1"
+                },
+
+                {
+                    "EventName": "LeetEvents Elections",
+                    "description": "LeetEvents Elections are the elections for the new LeetEvents members, starting at 12:00 PM on 12/12/2021",
+                    "image": "https://www.verywellmind.com/thmb/1Z6J9Q1"
+                }
+            ]
+        },
+        "Aiesec" :{
+            "name": "Aiesec",
+            "description": "Aiesec iS an international club that organizes events in all the universities in the world",
+            "image" : "https://www.verywellmind.com/thmb/1Z6J9Q1",
+            "Announcment " : [
+                {
+                    "EventName": "Aiesec Hackathon",
+                    "description": "Aiesec Hackathon is a 24h coding competition at 1337 in which students compete to build the best project, startoing at 12:00 PM on 12/12/2021",
+                    "image": "https://www.verywellmind.com/thmb/1Z6J9Q1"
+                },
+                {
+                    "EventName": "Aiesec Elections",
+                    "description": "Aiesec Elections are the elections for the new Aiesec members, starting at 12:00 PM on 12/12/2021",
+                    "image": "https://www.verywellmind.com/thmb/1Z6J9Q1"
+                },
+
+                {
+                    "EventName": "Aiesec Elections",
+                    "description": "Aiesec Elections are the elections for the new Aiesec members, starting at 12:00 PM on 12/12/2021",
+                    "image": "https://www.verywellmind.com/thmb/1Z6J9Q1"
+                }
+            ]
+        }
+    }
+}
