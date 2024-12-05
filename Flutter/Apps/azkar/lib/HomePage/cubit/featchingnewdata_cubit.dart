@@ -35,13 +35,12 @@ class DailyDataCubit extends Cubit<DailyDataState> {
 
   Future<void> fetchDailyData() async {
     emit(LoadingState());
+
     try {
       final prefs = await SharedPreferences.getInstance();
       final cachedData = prefs.getString('daily_data');
       final lastFetched = prefs.getInt('last_fetched') ?? 0;
-
-      if (cachedData != null && DateTime.now().millisecondsSinceEpoch - lastFetched < 86400000) {
-        // Use cached data
+      if (cachedData != null && DateTime.now().millisecondsSinceEpoch - lastFetched < 604800000) {
         final data = jsonDecode(cachedData);
         emit(LoadedState(
           ayah: data['ayah'],
@@ -51,6 +50,7 @@ class DailyDataCubit extends Cubit<DailyDataState> {
           description: data['description'],
         ));
       } else {
+        // Fetch new data since the cache is older than 7 days or missing
         final ayah = await _fetchRandomAyah();
         final hadith = await _fetchRandomHadith();
 
@@ -62,7 +62,7 @@ class DailyDataCubit extends Cubit<DailyDataState> {
           'description': hadith['description'],
         };
 
-        // Cache the data
+        // Cache the new data
         await prefs.setString('daily_data', jsonEncode(data));
         await prefs.setInt('last_fetched', DateTime.now().millisecondsSinceEpoch);
 

@@ -20,11 +20,11 @@ class AdanShown extends StatelessWidget {
         if (state is GetAdanLoaded) {
           var timings = state.timings;
           return Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 7),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Column(
+               const  Column(
                   children: [
                     Center(
                       child: Text(
@@ -41,13 +41,13 @@ class AdanShown extends StatelessWidget {
                     
                   ],
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 ...timings.entries.map((entry) => _buildTimingCard(entry.key, entry.value)).toList(),
               ],
             ),
           );
         } else if (state is GetAdanError) {
-          return Center(
+          return const Center(
             child: Text(
               'حدث خطأ أثناء جلب أوقات الصلاة',
               style: TextStyle(
@@ -58,8 +58,11 @@ class AdanShown extends StatelessWidget {
             ),
           );
         } else {
-          return Center(
+          return const Center(
             child: CircularProgressIndicator(
+              strokeWidth: 0.5,
+              // height:1,
+              backgroundColor: Colors.black,
               color: Colors.teal,
             ),
           );
@@ -91,9 +94,9 @@ class AdanShown extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
       ),
-      color: Colors.teal.withOpacity(0.1),
+      color: const Color.fromARGB(255, 152, 192, 188),
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 12),
+        padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 6),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [

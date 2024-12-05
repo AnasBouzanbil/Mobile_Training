@@ -19,15 +19,26 @@ class CategoriesRepository {
         if (categoryContent is List) {
           return Right(List<Map<String, dynamic>>.from(categoryContent));
         } else {
-          return Left('Content format is invalid');
+          return const Left('Content format is invalid');
         }
       } else {
-        return Left('Category not found');
+        return const Left('Category not found');
       }
     } catch (e) {
       return Left(e.toString());
     }
   }
+
+Future<Either<dynamic, List<Map<String, dynamic>>>> loadDua() async {
+  try {
+    final data = await JsonLoader().loadJsonDua();
+    final list = data.whereType<Map<String, dynamic>>().toList();
+    return Right(list);
+    } catch (e) {
+    return Left(e.toString());
+  }
+}
+
 }
 
 

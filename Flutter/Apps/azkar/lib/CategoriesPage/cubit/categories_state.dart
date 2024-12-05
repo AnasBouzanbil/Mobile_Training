@@ -34,3 +34,21 @@ final class CategoriesContentError extends CategoriesState {
   final String message;
   CategoriesContentError(this.message);
 }
+
+final class DuaContentLoading extends CategoriesState {
+  final List<dynamic> dua;
+  DuaContentLoading(this.dua);
+}
+
+final class DuaContentLoaded extends CategoriesState {
+  final List<Map<String, dynamic>> duaContent;
+  DuaContentLoaded(this.duaContent);
+}
+
+final class DuaContentError extends CategoriesState {
+  final String message;
+  DuaContentError(this.message);
+}
+
+
+

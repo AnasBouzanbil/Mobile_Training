@@ -1,11 +1,8 @@
 import 'package:azkar/AzkarPage/TasbihPage.dart';
 import 'package:azkar/CategoriesPage/AzkarPage.dart';
-import 'package:azkar/CategoriesPage/cubit/categories_cubit.dart';
-import 'package:azkar/HomePage/AdanShown/cubit/get_adan_cubit.dart';
-import 'package:azkar/HomePage/PageoNe.dart';
+import 'package:azkar/HomePage/DailyDataPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_islamic_icons/flutter_islamic_icons.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class HomePage extends StatefulWidget {
@@ -29,15 +26,8 @@ class _HomePageState extends State<HomePage> {
       controller: controller,
       children: [
         DailyDataPage(),
-        BlocProvider<CategoriesCubit>(
-          create: (context) => CategoriesCubit()..loadCategories(),
-          child:  Categories(),
-        ),
-         BlocProvider(
-        create: (context) => GetAdanCubit()..fetchAdanTimings(),
-        child: AsmaaAllahWidget(),
-      ),
-
+        Categories(),
+         AsmaaAllahWidget(),
       ],
     ),
 

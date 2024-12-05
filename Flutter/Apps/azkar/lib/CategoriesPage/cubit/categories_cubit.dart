@@ -25,4 +25,18 @@ class CategoriesCubit extends Cubit<CategoriesState> {
       (content) => emit(CategoriesContentLoaded(content)),
     );
   }
+
+void loadDuaContent() async {
+  emit(DuaContentLoading([])); // Emit initial loading state
+  final result = await repository.loadDua();
+  result.fold(
+    (error) => emit(DuaContentError(error.toString())),
+    (duaList) => emit(DuaContentLoaded(duaList)), // Emits a list of maps
+  );
 }
+
+
+
+
+  }
+  
